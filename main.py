@@ -25,7 +25,7 @@ class Deck:
     def __init__(self):
         self.cards = []
         for rank in RANKS:
-            for num in range(4):
+            for _ in range(4):
                 created_card = Card(rank)
                 self.cards.append(created_card)
 
@@ -110,7 +110,7 @@ def main() -> None:
                 player.bet_amount = int(input(f'{player.name}, place your bet: '))
 
             # Add two cards to each player's hand at the start of every game
-            for num in range(2):
+            for _ in range(2):
                 player.current_hand.append(dealer.deal_a_card())
                 dealer.current_hand.append(dealer.deal_a_card())
 
@@ -207,7 +207,7 @@ def main() -> None:
                     player.bet_amount = int(input(f'{player.name}, place your bet: '))
 
                 # Deal two cards each to the player and dealer
-                for num in range(2):
+                for _ in range(2):
                     player.current_hand.append(dealer.deal_a_card())
                     dealer.current_hand.append(dealer.deal_a_card())
 
