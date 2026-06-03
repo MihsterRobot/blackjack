@@ -81,6 +81,15 @@ def calculate_hand(hand: list[Card]) -> int:
     return total
 
 
+# FIXME: Consider whether the parameter name `dealer` shadows the outer `dealer` variable. 
+# It won't cause a bug here since it's a function parameter, 
+# but it's worth being deliberate about it.
+def display_cards(player: Player, dealer: Dealer) -> None:
+    print(f"{player.name}'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}")
+    print(f"{dealer.name}'s cards: {dealer.current_hand[0].rank} and Face Down")
+    print()
+
+
 def main() -> None:
     player = Player('Yousef', 10000)
     dealer = Dealer(10000)
@@ -106,9 +115,7 @@ def main() -> None:
                 dealer.current_hand.append(dealer.deal_a_card())
 
             # Display the player's and dealer's cards
-            print(f"{player.name}'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}")
-            # Display the dealer's first card and hide the second card
-            print(f"{dealer.name}'s cards: {dealer.current_hand[0].rank} and Face Down")
+            display_cards(player, dealer)
 
             # Evaluate player and dealer hands
             player_hand_value = calculate_hand(player.current_hand)
@@ -124,44 +131,33 @@ def main() -> None:
                     dealt_card = dealer.deal_a_card()
                     player.current_hand.append(dealt_card)
                     player_hand_value = calculate_hand(player.current_hand)
-
                     if dealt_card.rank in ('Eight', 'Ace'):
                         print(f'{player.name} drew an {dealt_card.rank}.')
                     else:
                         print(f'{player.name} drew a {dealt_card.rank}.')
 
-                    # Player win
-                    if player_hand_value == 21:
+                    outcome = ''
+                    if player_hand_value == 21:  # Player win
                         print(f'{player.name} won with {player_hand_value}! {dealer.name} had {dealer_hand_value}.')
-
                         update_bankroll_and_winnings(player, dealer, player.bet_amount)
-
-                        print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                        print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
-
-                        player.current_hand.clear()
-                        dealer.current_hand.clear()
-
-                        break
-                    # Player bust
-                    elif player_hand_value > 21:
+                        outcome = 'win'
+                    elif player_hand_value > 21: # Player bust
                         print(f'{player.name} bust with {player_hand_value}! {dealer.name} won!')
-
                         update_bankroll_and_winnings(dealer, player, player.bet_amount)
-
-                        print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                        print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
-
-                        player.current_hand.clear()
-                        dealer.current_hand.clear()
-
-                        break
+                        outcome = 'bust'
                     else:
                         choice = int(input('Choose 1 to hit or 2 to stand: '))
 
+                    if outcome:
+                        print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                        print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                        player.current_hand.clear()
+                        dealer.current_hand.clear()
+                        break
+
             # If the player chooses to stand, the dealer will hit until his hand value is at least 17, 
             # then evaluate the winner
-            if choice == 2:
+            elif choice == 2:
                 while dealer_hand_value < 17:
                     dealt_card = dealer.deal_a_card()
                     dealer.current_hand.append(dealt_card)
@@ -174,23 +170,17 @@ def main() -> None:
                 if dealer_hand_value > 21:  # Dealer bust
                     print(f'{dealer.name} bust with {dealer_hand_value}! {player.name} won!')
                     update_bankroll_and_winnings(player, dealer, player.bet_amount)
-                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
                 elif dealer_hand_value > player_hand_value:  # Dealer win
                     print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
                     update_bankroll_and_winnings(dealer, player, player.bet_amount)
-                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
-                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
                 elif player_hand_value > dealer_hand_value:  # Player win
                     print(f'{player.name} won with {player_hand_value}! {dealer.name} had {dealer_hand_value}.')
                     update_bankroll_and_winnings(player, dealer, player.bet_amount)
-                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
                 else:  # Tie
                     print(f'Tie! {player.name} and {dealer.name} both had {player_hand_value}.')
-                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
 
+                print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
                 player.current_hand.clear()
                 dealer.current_hand.clear()
 
@@ -221,11 +211,9 @@ def main() -> None:
                     player.current_hand.append(dealer.deal_a_card())
                     dealer.current_hand.append(dealer.deal_a_card())
 
-                # Display both of player's cards
-                print(f"{player.name}'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}")
-                # Display one of dealer's cards
-                print(f"{dealer.name}'s cards: {dealer.current_hand[0].rank} and Face Down")
-
+                # Display the player's and dealer's cards
+                display_cards(player, dealer)
+                
                 # Evaluate player and dealer hands
                 player_hand_value = calculate_hand(player.current_hand)
                 dealer_hand_value = calculate_hand(dealer.current_hand)
