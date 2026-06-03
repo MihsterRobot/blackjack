@@ -162,7 +162,7 @@ def main() -> None:
             # If the player chooses to stand, continue hitting
             # for the dealer until he either wins or busts
             if choice == 2:
-                while dealer_hand_value < 21:
+                while dealer_hand_value < player_hand_value:
                     dealt_card = dealer.deal_a_card()
                     dealer.current_hand.append(dealt_card)
                     dealer_hand_value = calculate_hand(dealer.current_hand)
