@@ -122,8 +122,8 @@ def main() -> None:
 
             # If the player chooses to hit, add a card to his current hand
             if choice == 1:
-                # While the player chooses to hit
-                while choice == 1:
+                outcome = ''
+                while choice == 1:  # While the player chooses to hit
                     dealt_card = dealer.deal_a_card()
                     player.current_hand.append(dealt_card)
                     player_hand_value = calculate_hand(player.current_hand)
@@ -132,7 +132,6 @@ def main() -> None:
                     else:
                         print(f'{player.name} drew a {dealt_card.rank}.')
 
-                    outcome = ''
                     if player_hand_value == 21:  # Player win
                         print(f'{player.name} won with {player_hand_value}! {dealer.name} had {dealer_hand_value}.')
                         update_bankroll_and_winnings(player, dealer, player.bet_amount)
