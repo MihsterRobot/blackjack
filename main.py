@@ -162,7 +162,7 @@ def main() -> None:
             # If the player chooses to stand, continue hitting
             # for the dealer until he either wins or busts
             if choice == 2:
-                while dealer_hand_value < player_hand_value:
+                while dealer_hand_value < 17:
                     dealt_card = dealer.deal_a_card()
                     dealer.current_hand.append(dealt_card)
                     dealer_hand_value = calculate_hand(dealer.current_hand)
@@ -172,32 +172,32 @@ def main() -> None:
                     else:
                         print(f'{dealer.name} drew a {dealt_card.rank}.')
 
-                    # Dealer win
-                    if player_hand_value < dealer_hand_value <= 21:
-                        print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
+                # Dealer win
+                if player_hand_value < dealer_hand_value <= 21:
+                    print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
 
-                        update_bankroll_and_winnings(dealer, player, player.bet_amount)
+                    update_bankroll_and_winnings(dealer, player, player.bet_amount)
 
-                        print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
-                        print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
 
-                        player.current_hand.clear()
-                        dealer.current_hand.clear()
+                    player.current_hand.clear()
+                    dealer.current_hand.clear()
 
-                        break
-                    # Dealer bust
-                    elif dealer_hand_value > 21:
-                        print(f'{dealer.name} bust with {dealer_hand_value}! {player.name} won!')
+                    break
+                # Dealer bust
+                elif dealer_hand_value > 21:
+                    print(f'{dealer.name} bust with {dealer_hand_value}! {player.name} won!')
 
-                        update_bankroll_and_winnings(player, dealer, player.bet_amount)
+                    update_bankroll_and_winnings(player, dealer, player.bet_amount)
 
-                        print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                        print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
 
-                        player.current_hand.clear()
-                        dealer.current_hand.clear()
+                    player.current_hand.clear()
+                    dealer.current_hand.clear()
 
-                        break
+                    break
 
             # End the game if either the dealer or player runs out of money
             if player.bankroll < 1:
