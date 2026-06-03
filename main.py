@@ -86,6 +86,12 @@ def display_cards(player: Player, dealer: Dealer) -> None:
     print()
 
 
+def display_bankrolls(player: Player, dealer: Dealer) -> None:
+    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+    print()
+
+
 def main() -> None:
     player = Player('Yousef', 10000)
     dealer = Dealer(10000)
@@ -127,8 +133,7 @@ def main() -> None:
                     print(f'{dealer.name} won with a blackjack!')
                     update_bankroll_and_winnings(dealer, player, player.bet_amount)
 
-                print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                display_bankrolls(player, dealer)
                 player.current_hand.clear()
                 dealer.current_hand.clear()
                 continue
@@ -160,8 +165,7 @@ def main() -> None:
                         choice = int(input('Choose 1 to hit or 2 to stand: '))
 
                     if outcome:
-                        print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                        print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                        display_bankrolls(player, dealer)
                         player.current_hand.clear()
                         dealer.current_hand.clear()
                         break
@@ -190,8 +194,7 @@ def main() -> None:
                 else:  # Tie
                     print(f'Tie! {player.name} and {dealer.name} both had {player_hand_value}.')
 
-                print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-                print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                display_bankrolls(player, dealer)
                 player.current_hand.clear()
                 dealer.current_hand.clear()
 
