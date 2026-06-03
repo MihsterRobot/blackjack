@@ -159,45 +159,40 @@ def main() -> None:
                     else:
                         choice = int(input('Choose 1 to hit or 2 to stand: '))
 
-            # If the player chooses to stand, continue hitting
-            # for the dealer until he either wins or busts
+            # If the player chooses to stand, the dealer will hit until his hand value is at least 17, 
+            # then evaluate the winner
             if choice == 2:
                 while dealer_hand_value < 17:
                     dealt_card = dealer.deal_a_card()
                     dealer.current_hand.append(dealt_card)
                     dealer_hand_value = calculate_hand(dealer.current_hand)
-
                     if dealt_card.rank in ('Eight', 'Ace'):
                         print(f'{dealer.name} drew an {dealt_card.rank}.')
                     else:
                         print(f'{dealer.name} drew a {dealt_card.rank}.')
 
-                # Dealer win
-                if player_hand_value < dealer_hand_value <= 21:
-                    print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
-
-                    update_bankroll_and_winnings(dealer, player, player.bet_amount)
-
-                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
-                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-
-                    player.current_hand.clear()
-                    dealer.current_hand.clear()
-
-                    break
-                # Dealer bust
-                elif dealer_hand_value > 21:
+                if dealer_hand_value > 21:  # Dealer bust
                     print(f'{dealer.name} bust with {dealer_hand_value}! {player.name} won!')
-
                     update_bankroll_and_winnings(player, dealer, player.bet_amount)
-
+                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                elif dealer_hand_value > player_hand_value:  # Dealer win
+                    print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
+                    update_bankroll_and_winnings(dealer, player, player.bet_amount)
+                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                elif player_hand_value > dealer_hand_value:  # Player win
+                    print(f'{player.name} won with {player_hand_value}! {dealer.name} had {dealer_hand_value}.')
+                    update_bankroll_and_winnings(player, dealer, player.bet_amount)
+                    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                else:  # Tie
+                    print(f'Tie! {player.name} and {dealer.name} both had {player_hand_value}.')
                     print(f"{player.name}'s bankroll: ${player.bankroll:,}")
                     print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
 
-                    player.current_hand.clear()
-                    dealer.current_hand.clear()
-
-                    break
+                player.current_hand.clear()
+                dealer.current_hand.clear()
 
             # End the game if either the dealer or player runs out of money
             if player.bankroll < 1:
