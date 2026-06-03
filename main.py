@@ -26,8 +26,7 @@ class Deck:
         self.cards = []
         for rank in RANKS:
             for _ in range(4):
-                created_card = Card(rank)
-                self.cards.append(created_card)
+               self.cards.append(Card(rank))
 
 
 class Player:
@@ -81,9 +80,6 @@ def calculate_hand(hand: list[Card]) -> int:
     return total
 
 
-# FIXME: Consider whether the parameter name `dealer` shadows the outer `dealer` variable. 
-# It won't cause a bug here since it's a function parameter, 
-# but it's worth being deliberate about it.
 def display_cards(player: Player, dealer: Dealer) -> None:
     print(f"{player.name}'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}")
     print(f"{dealer.name}'s cards: {dealer.current_hand[0].rank} and Face Down")
@@ -218,14 +214,12 @@ def main() -> None:
                 player_hand_value = calculate_hand(player.current_hand)
                 dealer_hand_value = calculate_hand(dealer.current_hand)
 
-                if player_hand_value == dealer_hand_value:
+                if player_hand_value == dealer_hand_value:  # Tie
                     print('Tie!')
-                # Player win
-                elif player_hand_value > dealer_hand_value:
+                elif player_hand_value > dealer_hand_value:  # Player win
                     print(f'{player.name} won with {player_hand_value}! {dealer.name} had {dealer_hand_value}.')
                     update_bankroll_and_winnings(player, dealer, player.bet_amount)
-                # Dealer win
-                else:
+                else:  # Dealer win
                     print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
                     update_bankroll_and_winnings(dealer, player, player.bet_amount)
 
