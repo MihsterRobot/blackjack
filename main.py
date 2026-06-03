@@ -131,7 +131,7 @@ def main() -> None:
                     dealt_card = dealer.deal_a_card()
                     player.current_hand.append(dealt_card)
                     player_hand_value = calculate_hand(player.current_hand)
-                    if dealt_card.rank in ('Eight', 'Ace'):
+                    if dealt_card.rank[0] in ('A', 'E'):
                         print(f'{player.name} drew an {dealt_card.rank}.')
                     else:
                         print(f'{player.name} drew a {dealt_card.rank}.')
@@ -162,7 +162,7 @@ def main() -> None:
                     dealt_card = dealer.deal_a_card()
                     dealer.current_hand.append(dealt_card)
                     dealer_hand_value = calculate_hand(dealer.current_hand)
-                    if dealt_card.rank in ('Eight', 'Ace'):
+                    if dealt_card.rank[0] in ('A', 'E'):
                         print(f'{dealer.name} drew an {dealt_card.rank}.')
                     else:
                         print(f'{dealer.name} drew a {dealt_card.rank}.')
