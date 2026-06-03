@@ -1,5 +1,5 @@
 """Blackjack card game."""
-import random as rand
+from random import shuffle
 
 RANKS = (
     'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
@@ -51,7 +51,7 @@ class Dealer:
         self.deck = Deck()
 
     def shuffle_cards(self):
-        rand.shuffle(self.deck.cards)
+        shuffle(self.deck.cards)
 
     def deal_a_card(self):
         """Deal a card off the top of the deck."""
