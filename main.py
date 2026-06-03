@@ -117,6 +117,22 @@ def main() -> None:
             player_hand_value = calculate_hand(player.current_hand)
             dealer_hand_value = calculate_hand(dealer.current_hand)
 
+            if player_hand_value == 21 or dealer_hand_value == 21:  # Check for blackjack
+                if player_hand_value == 21 and dealer_hand_value != 21:  # Player win with blackjack
+                    print(f'{player.name} won with a blackjack!')
+                    update_bankroll_and_winnings(player, dealer, player.bet_amount)
+                elif player_hand_value == 21 and dealer_hand_value == 21:  # Tie with blackjack
+                    print('Tie with blackjack!')
+                elif dealer_hand_value == 21 and player_hand_value != 21:  # Dealer win with blackjack
+                    print(f'{dealer.name} won with a blackjack!')
+                    update_bankroll_and_winnings(dealer, player, player.bet_amount)
+
+                print(f"{player.name}'s bankroll: ${player.bankroll:,}")
+                print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+                player.current_hand.clear()
+                dealer.current_hand.clear()
+                continue
+
             # Ask the player to hit or stand
             choice = int(input('Choose 1 to hit or 2 to stand: '))
 
@@ -233,12 +249,10 @@ def main() -> None:
             # If the deck has between one and four cards, determine the winner and end the game
             if len(dealer.deck.cards) in range(1, 4):
                 print('There are not enough cards in the deck to continue playing!')
-
                 if dealer.winnings > player.winnings:
                     print(f"{dealer.name}'s winnings: ${dealer.winnings:,} \n{dealer.name} wins!")
                 else:
                     print(f"{player.name}'s winnings: ${player.winnings:,} \n{player.name} wins!")
-
                 continue_game = False
 
 
