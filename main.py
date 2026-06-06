@@ -43,7 +43,7 @@ class Player:
 
 class Dealer:
     def __init__(self, bankroll):
-        self.name = 'Dealer'
+        self.name = 'Lauren'
         self.bankroll = bankroll
         self.winnings = 0
         self.current_hand = []
@@ -57,7 +57,7 @@ class Dealer:
         return self.deck.cards.pop(0)
 
     def __str__(self):
-        return f'Player: {self.name} \nBankroll: ${self.bankroll:,}'
+        return f'Dealer: {self.name} \nBankroll: ${self.bankroll:,}'
 
 
 def update_bankroll_and_winnings(winner: Player | Dealer, loser: Player | Dealer, bet_amount: int) -> None:
