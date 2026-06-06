@@ -102,7 +102,7 @@ def main() -> None:
         dealer.shuffle_cards()
 
         # Continue playing until the deck doesn't have enough cards to start a new game
-        while len(dealer.deck.cards) > 3:
+        while len(dealer.deck.cards) >= 4:
             # Ask the player to place a bet
             player.bet_amount = int(input(f'{player.name}, place your bet: '))
 
@@ -208,49 +208,8 @@ def main() -> None:
                 continue_game = False
                 break
 
-            # If there are only four cards left in the deck, deal both players two cards,
-            # evaluate the last play, determine a winner based on winnings, and end the game
-            if len(dealer.deck.cards) == 4:
-                print('There are four cards left in the deck!')
-
-                # Ask the player to place a bet
-                player.bet_amount = int(input(f'{player.name}, place your bet: '))
-                # Input validation for bet
-                while player.bet_amount > player.bankroll:
-                    print("You don't have enough money to place this bet.")
-                    player.bet_amount = int(input(f'{player.name}, place your bet: '))
-
-                # Deal two cards each to the player and dealer
-                for _ in range(2):
-                    player.current_hand.append(dealer.deal_a_card())
-                    dealer.current_hand.append(dealer.deal_a_card())
-
-                # Display the player's and dealer's cards
-                display_cards(player, dealer)
-                
-                # Evaluate player and dealer hands
-                player_hand_value = calculate_hand(player.current_hand)
-                dealer_hand_value = calculate_hand(dealer.current_hand)
-
-                if player_hand_value == dealer_hand_value:  # Tie
-                    print('Tie!')
-                elif player_hand_value > dealer_hand_value:  # Player win
-                    print(f'{player.name} won with {player_hand_value}! {dealer.name} had {dealer_hand_value}.')
-                    update_bankroll_and_winnings(player, dealer, player.bet_amount)
-                else:  # Dealer win
-                    print(f'{dealer.name} won with {dealer_hand_value}! {player.name} had {player_hand_value}.')
-                    update_bankroll_and_winnings(dealer, player, player.bet_amount)
-
-                if dealer.winnings > player.winnings:
-                    print(f"{dealer.name}'s winnings: ${dealer.winnings:,} \n{dealer.name} wins!")
-                else:
-                    print(f"{player.name}'s winnings: ${player.winnings:,} \n{player.name} wins!")
-
-                print('The deck is empty! GAME OVER!')
-                continue_game = False
-
             # If the deck has between one and four cards, determine the winner and end the game
-            if len(dealer.deck.cards) in range(1, 4):
+            if len(dealer.deck.cards) < 4:
                 print('There are not enough cards in the deck to continue playing!')
                 if dealer.winnings > player.winnings:
                     print(f"{dealer.name}'s winnings: ${dealer.winnings:,} \n{dealer.name} wins!")
