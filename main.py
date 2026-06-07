@@ -74,6 +74,19 @@ def get_bet_amount(player: Player) -> None:
         break
 
 
+def get_choice() -> int:
+    while True:
+        try:
+            choice = int(input('Choose 1 to hit or 2 to stand: '))
+        except ValueError:
+            print('Invalid input. Please enter 1 or 2.')
+            continue
+        if choice not in (1, 2):
+            print('Invalid choice. Please enter 1 to hit or 2 to stand.')
+            continue
+        return choice
+
+
 def calculate_hand(hand: list[Card]) -> int:
     total = 0
     aces = 0
@@ -146,8 +159,7 @@ def main() -> None:
                 dealer.current_hand.clear()
                 continue
 
-            # Ask the player to hit or stand
-            choice = int(input('Choose 1 to hit or 2 to stand: '))
+            choice = get_choice()
 
             # If the player chooses to hit, add a card to his current hand
             if choice == 1:
@@ -170,7 +182,7 @@ def main() -> None:
                         update_bankroll_and_winnings(dealer, player, player.bet_amount)
                         outcome = 'bust'
                     else:
-                        choice = int(input('Choose 1 to hit or 2 to stand: '))
+                        choice = get_choice()
 
                     if outcome:
                         display_bankrolls(player, dealer)
