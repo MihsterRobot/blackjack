@@ -1,4 +1,4 @@
-'''Blackjack card game.'''
+'''A command-line implementation of the classic Blackjack card game.'''
 
 from random import shuffle
 
@@ -14,16 +14,27 @@ VALUES = {
 
 
 class Card:
-    def __init__(self, rank):
+    '''Represents a single playing card with a rank and value.'''
+
+    def __init__(self, rank: str):
+        '''Initialize a card with a rank and its corresponding value.
+
+        Args:
+            rank: The rank of the card (e.g. 'Ace', 'King', 'Two').
+        '''
         self.rank = rank
         self.value = VALUES[rank]
 
-    def __str__(self):
+    def __str__(self) -> str:
+        '''Return a string representation of the card.'''
         return f'Card: {self.rank}, Value: {self.value}'
 
 
 class Deck:
+    '''Represents a standard 52-card deck, with four cards of each rank.'''
+
     def __init__(self):
+        '''Initialize a deck of 52 cards, four of each rank.'''
         self.cards = []
         for rank in RANKS:
             for _ in range(4):
@@ -31,37 +42,63 @@ class Deck:
 
 
 class Player:
-    def __init__(self, name, bankroll):
+    '''Represents a human player with a name, bankroll, and current hand.'''
+
+    def __init__(self, name: str, bankroll: int):
+        '''Initialize a player with a name and starting bankroll.
+        
+        Args:
+            name: The player's name.
+            bankroll: The player's starting bankroll in dollars.
+        '''
         self.name = name
         self.bankroll = bankroll
         self.winnings = 0
         self.bet_amount = 0
         self.current_hand = []
 
-    def __str__(self):
+    def __str__(self) -> str:
+        '''Return a string representation of the player.'''
         return f'Player: {self.name} \nBankroll: ${self.bankroll:,}'
 
 
 class Dealer:
-    def __init__(self, bankroll):
+    '''Represents the dealer, who manages the deck and plays against the player.'''
+    
+    def __init__(self, bankroll: int):
+        '''Initialize the dealer with a starting bankroll and a fresh deck.
+
+        Args:
+            bankroll: The dealer's starting bankroll in dollars.
+        '''
         self.name = 'Lauren'
         self.bankroll = bankroll
         self.winnings = 0
         self.current_hand = []
         self.deck = Deck()
 
-    def shuffle_cards(self):
+    def shuffle_cards(self) -> None:
+        '''Shuffle the cards in the deck in place.'''
         shuffle(self.deck.cards)
 
-    def deal_a_card(self):
+    def deal_a_card(self) -> Card:
         '''Removes and returns the top card from the deck.'''
         return self.deck.cards.pop(0)
 
-    def __str__(self):
+    def __str__(self) -> str:
+        '''Return a string representation of the dealer.'''
         return f'Dealer: {self.name} \nBankroll: ${self.bankroll:,}'
 
 
 def get_bet_amount(player: Player) -> None:
+    '''Prompt the player to place a bet and validate the input.
+
+    Keeps prompting until the player enters a valid whole number
+    that does not exceed their current bankroll.
+
+    Args:
+        player: The player placing the bet.
+    '''
     while True:
         try:
             player.bet_amount = int(input(f'{player.name}, place your bet: '))
@@ -75,6 +112,13 @@ def get_bet_amount(player: Player) -> None:
 
 
 def get_choice() -> int:
+    '''Prompt the player to choose to hit or stand and validate the input.
+
+    Keeps prompting until the player enters either 1 (hit) or 2 (stand).
+
+    Returns:
+        1 if the player chooses to hit, 2 if the player chooses to stand.
+    '''
     while True:
         try:
             choice = int(input('Choose 1 to hit or 2 to stand: '))
@@ -88,6 +132,17 @@ def get_choice() -> int:
 
 
 def calculate_hand(hand: list[Card]) -> int:
+    '''Calculate the total value of a hand, adjusting for Aces.
+
+    Aces are counted as 11 unless doing so would bust the hand,
+    in which case they are counted as 1.
+
+    Args:
+        hand: A list of Card objects representing the hand.
+
+    Returns:
+        The total value of the hand.
+    '''
     total = 0
     aces = 0
     for card in hand:
@@ -101,6 +156,13 @@ def calculate_hand(hand: list[Card]) -> int:
 
 
 def update_bankroll_and_winnings(winner: Player | Dealer, loser: Player | Dealer, bet_amount: int) -> None:
+    '''Update the bankroll and winnings of the winner and loser.
+
+    Args:
+        winner: The player or dealer who won the round.
+        loser: The player or dealer who lost the round.
+        bet_amount: The amount wagered in the round.
+    '''
     winner.bankroll += bet_amount
     winner.winnings += bet_amount
     loser.bankroll -= bet_amount
@@ -108,18 +170,33 @@ def update_bankroll_and_winnings(winner: Player | Dealer, loser: Player | Dealer
 
 
 def display_cards(player: Player, dealer: Dealer) -> None:
+    '''Display the player's cards and the dealer's first card.
+
+    The dealer's second card is hidden.
+
+    Args:
+        player: The player whose cards are displayed.
+        dealer: The dealer whose first card is displayed.
+    '''
     print(f'{player.name}\'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}')
     print(f'{dealer.name}\'s cards: {dealer.current_hand[0].rank} and Face Down')
     print()
 
 
 def display_bankrolls(player: Player, dealer: Dealer) -> None:
+    '''Display the current bankroll of the player and dealer.
+
+    Args:
+        player: The player whose bankroll is displayed.
+        dealer: The dealer whose bankroll is displayed.
+    '''
     print(f'{player.name}\'s bankroll: ${player.bankroll:,}')
     print(f'{dealer.name}\'s bankroll: ${dealer.bankroll:,}')
     print()
 
 
 def main() -> None:
+    '''Entry point for the Blackjack game.'''
     player = Player('Yousef', 10000)
     dealer = Dealer(10000)
     print()
