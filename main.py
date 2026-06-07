@@ -1,4 +1,4 @@
-"""Blackjack card game."""
+'''Blackjack card game.'''
 
 from random import shuffle
 
@@ -54,7 +54,7 @@ class Dealer:
         shuffle(self.deck.cards)
 
     def deal_a_card(self):
-        """Deal a card off the top of the deck."""
+        '''Removes and returns the top card from the deck.'''
         return self.deck.cards.pop(0)
 
     def __str__(self):
@@ -69,7 +69,7 @@ def get_bet_amount(player: Player) -> None:
             print('Invalid input. Please enter a whole number.')
             continue
         if player.bet_amount > player.bankroll:
-            print("You can't bet more than your current bankroll.")
+            print('You can\'t bet more than your current bankroll.')
             continue
         break
 
@@ -108,14 +108,14 @@ def update_bankroll_and_winnings(winner: Player | Dealer, loser: Player | Dealer
 
 
 def display_cards(player: Player, dealer: Dealer) -> None:
-    print(f"{player.name}'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}")
-    print(f"{dealer.name}'s cards: {dealer.current_hand[0].rank} and Face Down")
+    print(f'{player.name}\'s cards: {player.current_hand[0].rank} and {player.current_hand[1].rank}')
+    print(f'{dealer.name}\'s cards: {dealer.current_hand[0].rank} and Face Down')
     print()
 
 
 def display_bankrolls(player: Player, dealer: Dealer) -> None:
-    print(f"{player.name}'s bankroll: ${player.bankroll:,}")
-    print(f"{dealer.name}'s bankroll: ${dealer.bankroll:,}")
+    print(f'{player.name}\'s bankroll: ${player.bankroll:,}')
+    print(f'{dealer.name}\'s bankroll: ${dealer.bankroll:,}')
     print()
 
 
@@ -232,9 +232,9 @@ def main() -> None:
             if len(dealer.deck.cards) < 4:
                 print('There are not enough cards in the deck to continue playing!')
                 if dealer.winnings > player.winnings:
-                    print(f"{dealer.name}'s winnings: ${dealer.winnings:,} \n{dealer.name} wins!")
+                    print(f'{dealer.name}\'s winnings: ${dealer.winnings:,} \n{dealer.name} wins!')
                 else:
-                    print(f"{player.name}'s winnings: ${player.winnings:,} \n{player.name} wins!")
+                    print(f'{player.name}\'s winnings: ${player.winnings:,} \n{player.name} wins!')
                 continue_game = False
 
 
