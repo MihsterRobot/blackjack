@@ -1,4 +1,5 @@
 """Blackjack card game."""
+
 from random import shuffle
 
 RANKS = (
@@ -26,7 +27,7 @@ class Deck:
         self.cards = []
         for rank in RANKS:
             for _ in range(4):
-               self.cards.append(Card(rank))
+                self.cards.append(Card(rank))
 
 
 class Player:
@@ -60,11 +61,17 @@ class Dealer:
         return f'Dealer: {self.name} \nBankroll: ${self.bankroll:,}'
 
 
-def update_bankroll_and_winnings(winner: Player | Dealer, loser: Player | Dealer, bet_amount: int) -> None:
-    winner.bankroll += bet_amount
-    winner.winnings += bet_amount
-    loser.bankroll -= bet_amount
-    loser.winnings -= bet_amount
+def get_bet_amount(player: Player) -> None:
+    while True:
+        try:
+            player.bet_amount = int(input(f'{player.name}, place your bet: '))
+        except ValueError:
+            print('Invalid input. Please enter a whole number.')
+            continue
+        if player.bet_amount > player.bankroll:
+            print("You can't bet more than your current bankroll.")
+            continue
+        break
 
 
 def calculate_hand(hand: list[Card]) -> int:
@@ -78,6 +85,13 @@ def calculate_hand(hand: list[Card]) -> int:
         total -= 10
         aces -= 1
     return total
+
+
+def update_bankroll_and_winnings(winner: Player | Dealer, loser: Player | Dealer, bet_amount: int) -> None:
+    winner.bankroll += bet_amount
+    winner.winnings += bet_amount
+    loser.bankroll -= bet_amount
+    loser.winnings -= bet_amount
 
 
 def display_cards(player: Player, dealer: Dealer) -> None:
@@ -103,13 +117,7 @@ def main() -> None:
 
         # Continue playing until the deck doesn't have enough cards to start a new game
         while len(dealer.deck.cards) >= 4:
-            # Ask the player to place a bet
-            player.bet_amount = int(input(f'{player.name}, place your bet: '))
-
-            # Input validation for bet
-            while player.bet_amount > player.bankroll:
-                print("You don't have enough money to place this bet.")
-                player.bet_amount = int(input(f'{player.name}, place your bet: '))
+            get_bet_amount(player)
 
             # Add two cards to each player's hand at the start of every game
             for _ in range(2):
